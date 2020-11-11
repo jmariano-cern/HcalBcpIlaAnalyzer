@@ -17,10 +17,10 @@ class IlaData:
         self.bc0word='7c'
         self.framelength=24
         self.rxdata_signals = [
-            "hb0_gtwiz_userdata_rx_int_1[15:0]" , 
-            "hb1_gtwiz_userdata_rx_int_1[15:0]" , 
-            "hb2_gtwiz_userdata_rx_int_1[15:0]" , 
-            "hb3_gtwiz_userdata_rx_int_1[15:0]" , 
+            "hb0_gtwiz_userdata_rx_int_1[15:0]" ,
+            "hb1_gtwiz_userdata_rx_int_1[15:0]" ,
+            "hb2_gtwiz_userdata_rx_int_1[15:0]" ,
+            "hb3_gtwiz_userdata_rx_int_1[15:0]" ,
         ]
         #   "datatype"   : (lowest_bit,highest_bit+1)
         self.framedict = {
@@ -131,6 +131,7 @@ class IlaData:
             "TDC4"       : (0.0,0.0) ,
         }
         self.analysis_dir="/home/jomarian/analysis"
+        self.logfile_ext=".txt"
         self.datafile_path=datafile_path
         self.get_datafile_name()
         self.make_analysis_dir()
@@ -189,7 +190,7 @@ class IlaData:
         return data
 
     def get_logfile(self):
-        self.logfile_name=self.analysis_dir+'/'+self.datafile_name+'/'+self.datafile_name+'.log'
+        self.logfile_name=self.analysis_dir+'/'+self.datafile_name+'/'+self.datafile_name+''+self.logfile_ext
         self.logfile=open(self.logfile_name,'w')        
         self.logfile.close()
         
@@ -362,9 +363,6 @@ class IlaData:
     def full_analyze(self):
         self.open_log()
         for signal in self.rxdata_signals:
-            self.analyze_signal(signal)
+            if signal in self.headers:
+                self.analyze_signal(signal)
         self.close_log()
-            
-# todo
-# clear log at start
-# accept also BC0 comma
